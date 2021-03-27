@@ -1,0 +1,52 @@
+:root {
+  font-size: 62.5%; /* 1rem = 10px */
+}
+
+*,
+::after,
+::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 1px; /* Required to make the child 100% of the min-height */
+  min-height: 100%;
+  overflow-x: hidden;
+}
+
+a {
+  text-decoration: inherit;
+  color: inherit;
+
+  &:hover {
+    text-decoration: inherit;
+    color: inherit;
+  }
+}
+
+h1 {
+  font-size: 2.8rem;
+  font-weight: bold;
+  line-height: 3.2rem;
+}
+
+:active,
+:hover,
+:focus {
+  outline: 0;
+  outline-offset: 0;
+}
+
+input,
+button,
+select {
+  background: initial;
+}
+
+button,
+input[type="button"] {
+  cursor: pointer;
+}
