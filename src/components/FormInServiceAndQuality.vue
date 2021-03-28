@@ -115,6 +115,7 @@ export default {
     // Состояние загрузки городов
     citiesLoader: null,
 
+    // Настройка для "Тема обращения"
     themeOptions: {
       values: [
         "Недоволен качеством услуг",
@@ -125,6 +126,7 @@ export default {
       other: true,
     },
 
+    // Двунаправленный объект состояния формы
     form: {
       branch: {
         city: null,
@@ -140,12 +142,17 @@ export default {
   }),
 
   mounted() {
+    // Запускаем загрузку списка гордов
     this.loadСities();
   },
 
   computed: {
     ...mapGetters(["cities"]),
 
+    /**
+     * Вычисляет является ли форма инвалидной.
+     * @returns {Boolean} true - invalid, false - valid
+     */
     isInvalidForm() {
       if (!this.form.branch.city && !this.form.branch.online) return true;
       if (!this.form.theme.selected && !this.form.theme.other) return true;
@@ -156,16 +163,22 @@ export default {
   },
 
   watch: {
+    // Слушаем состояние загрузки списка городов. Если идет загрузка,
+    // то чекбокс Online находится в активном состоянии.
     citiesLoader(status) {
       this.form.branch.online = !!status;
     },
 
+    // Слушаем поле Other в разделе «Тема обращения».
+    // Снимаем радиобокс, если произошло изменение
     "form.theme.other"(value) {
       if (/^[\s]*$/.test(value ?? "")) return;
 
       this.form.theme.selected = null;
     },
 
+    // Слушаем радиобоксы в разделе «Тема обращения».
+    // Удаляем текст поля Other, если произошло измените.
     "form.theme.selected"(value) {
       if (/^[\s]*$/.test(value ?? "")) return;
 
@@ -176,19 +189,28 @@ export default {
   methods: {
     ...mapActions(["fetchСityList"]),
 
+    /**
+     * Запускает цепочку действий для загрузки списка городов с сервера
+     * @returns void
+     */
     loadСities() {
+      // Проверяем наличие списка городов
       if (this.cities.length) return;
 
+      // Загружаем данные
       this.sleep()
         .then(() => {
+          // Включаем визуальное представление загрузки
           this.citiesLoader++;
         })
         .then(() => this.fetchСityList())
         .catch((ex) => {
+          // Выводим сообщение об ошибке в случаи отказа
           console.exception(ex);
           this.showExeption(ex.name, ex.message);
         })
         .finally(() => {
+          // Отключаем визуальное представление загрузки
           this.citiesLoader--;
         });
     },
@@ -209,14 +231,30 @@ export default {
       this.submitFormToServer();
     },
 
+    /**
+     * Создает событие открытия визуального представления об ошибке
+     * @param {String} name - имя ошибки
+     * @param {String} message - текст ошибки
+     * @returns void
+     */
     showExeption(name, message) {
       this.$emit("exeption", name, message);
     },
 
+    /**
+     * Создает событие открытия модального окна на родительском уровне родительского компонента
+     * @param {String} title - заголовок
+     * @param {String} message - тело сообщения
+     * @returns void
+     */
     showModalWindow(title, message) {
       this.$emit("modal", title, message);
     },
 
+    /**
+     * Создает событие отправки формы
+     * @returns void
+     */
     submitFormToServer() {
       this.$emit("submit", cloneDeep(this.form));
     },

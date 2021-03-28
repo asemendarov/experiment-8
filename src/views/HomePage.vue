@@ -50,14 +50,21 @@ export default {
      * Обработчик события отображения модального окна
      * @returns void
      */
-    handlerEventShowModalWindows() {
-      // pass
+    handlerEventShowModalWindows(title, message) {
+      this.showModalWindow(title, message);
     },
 
+    /**
+     * Обработчик события отправки формы
+     * @returns void
+     */
     handlerEventSubmitForm(data) {
-      this.statusLoad++;
-
+      // Отправляем данные
       this.sleep()
+        .then(() => {
+          // Включаем визуальное представление загрузки
+          this.statusLoad++;
+        })
         .then(() =>
           fetch("https://60254fac36244d001797bfe8.mockapi.io/api/v1/send-form", {
             method: "POST",
@@ -69,17 +76,25 @@ export default {
         )
         .then((responce) => responce.json())
         .then((data) => {
+          // Обрабатывает данные ответа полученного с сервера в случаи успеха
           this.processingResponseData(data);
         })
         .catch((ex) => {
+          // Выводим сообщение об ошибке в случаи отказа
           console.exception(ex);
           this.showMsgException(ex.name, ex.message);
         })
         .finally(() => {
+          // Отключаем визуальное представление загрузки
           this.statusLoad--;
         });
     },
 
+    /**
+     * Обрабатывает данные ответа полученного с сервера
+     * @param {String} data - объект данных
+     * @returns void
+     */
     processingResponseData(data) {
       if (!data) throw new Error("Сервер вернул пустое сообщение.");
 
@@ -104,6 +119,12 @@ export default {
       return this.$refs.modal.show(title, message);
     },
 
+    /**
+     * Открывает визуального представления об ошибке
+     * @param {String} name - имя ошибки
+     * @param {String} message - текст ошибки
+     * @returns void
+     */
     showMsgException(name, message) {
       this.$refs.exception.show(name, message);
     },
