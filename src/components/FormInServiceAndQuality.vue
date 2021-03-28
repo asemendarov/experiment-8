@@ -29,7 +29,7 @@
               type="checkbox"
               name="online"
               v-model="form.branch.online"
-              :disabled="citiesLoader"
+              :disabled="!!citiesLoader"
             />
             <label class="ml-1">Онлайн</label>
           </div>
@@ -177,9 +177,12 @@ export default {
     ...mapActions(["fetchСityList"]),
 
     loadСities() {
-      this.citiesLoader++;
+      if (this.cities.length) return;
 
       this.sleep()
+        .then(() => {
+          this.citiesLoader++;
+        })
         .then(() => this.fetchСityList())
         .catch((ex) => {
           console.exception(ex);

@@ -74,7 +74,8 @@ select {
   border-radius: $border-radius;
 }
 
-input[type="submit"] {
+input[type="submit"],
+input[type="button"] {
   color: $color-cta;
   background: $bg-color-cta;
   border-radius: $border-radius;

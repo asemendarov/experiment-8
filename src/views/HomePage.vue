@@ -84,7 +84,11 @@ export default {
       if (!data) throw new Error("Сервер вернул пустое сообщение.");
 
       if (data?.success) {
-        this.showModalWindow("Успех", "Заявка подана успешно!");
+        // Сообщить об успешной отправке через модальное окно
+        // this.showModalWindow("Успех", "Заявка подана успешно!");
+
+        // Сообщить об успешной отправке через Success Page
+        this.redirectToSuccessPage();
       } else {
         this.showMsgException("Неудача", "Ошибка отправки заявки!");
       }
@@ -115,6 +119,14 @@ export default {
           resolve();
         }, ms);
       });
+    },
+
+    /**
+     * Перебрасывает на страницу Success Page
+     * @returns void
+     */
+    redirectToSuccessPage() {
+      this.$router.push({ name: "Success" });
     },
   },
 };

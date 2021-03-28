@@ -1,18 +1,26 @@
+// Import Base
 import Vue from "vue";
 import VueRouter from "vue-router";
+// Import Views
 import HomePage from "@/views/HomePage";
+import SuccessPage from "@/views/SuccessPage";
 
 Vue.use(VueRouter);
 
 const routes = [
   {
     path: "/",
-    name: "HomePage",
+    name: "Home",
     component: HomePage,
   },
   {
+    path: "/success",
+    name: "Success",
+    component: SuccessPage,
+  },
+  {
     path: "*",
-    redirect: { name: "HomePage" },
+    redirect: { name: "Home" },
   },
 ];
 

@@ -1,13 +1,11 @@
 export default {
   state: {
+    url: "https://60254fac36244d001797bfe8.mockapi.io/api/v1/city",
     cityList: [],
   },
   getters: {
     cities(state) {
       return state.cityList;
-    },
-    statusLoadCities(state) {
-      return state.loading;
     },
   },
   mutations: {
@@ -16,8 +14,8 @@ export default {
     },
   },
   actions: {
-    async fetchСityList({ commit }) {
-      fetch("https://60254fac36244d001797bfe8.mockapi.io/api/v1/city")
+    async fetchСityList({ commit, state }) {
+      fetch(state.url)
         .then((res) => {
           if (!res.ok) {
             throw new Error(

@@ -28,6 +28,11 @@
 
 .img-wrap {
   position: relative;
+
+  & img {
+    width: 100%;
+    height: auto;
+  }
 }
 
 .position-sticky {
@@ -65,7 +70,7 @@
   overflow: hidden;
 
   &:hover {
-    // overflow-x: auto;
+    overflow-x: auto;
   }
 }
 
